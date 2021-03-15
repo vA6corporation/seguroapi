@@ -16,5 +16,8 @@ export class ReadUserDto {
   readonly email!: string;
 
   @Expose()
+  readonly allGuaranties!: boolean;
+
+  @Expose()
   readonly businessId!: string;
 }

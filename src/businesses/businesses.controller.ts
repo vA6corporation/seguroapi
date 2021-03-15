@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
 import { BusinessesService } from './businesses.service';
@@ -11,15 +11,15 @@ export class BusinessesController {
   constructor(
     private businessesService: BusinessesService,
     private usersService: UsersService,
-  ) {}
+  ) { }
 
   @Post()
   async createBusiness(@Body('business') createBusinessDto: CreateBusinessDto, @Body('user') createUserDto: CreateUserDto): Promise<ReadBusinessDto|HttpException> {
     try {
-      const foundBusiness = await this.businessesService.findBusinessByRuc(createBusinessDto.ruc);
+      const foundBusiness = await this.businessesService.findBusinessByDocument(createBusinessDto.document);
       const foundUser = await this.usersService.findUserByEmail(createUserDto.email);
       if (foundBusiness) {
-        throw new Error("Existe una empresa con el mismo N° de RUC");
+        throw new Error("Existe una empresa con el mismo N° de documento");
       }
       if (foundUser) {
         throw new Error("Existe un usuario con el mismo email");

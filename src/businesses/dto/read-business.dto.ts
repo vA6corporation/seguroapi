@@ -6,8 +6,9 @@ export class ReadBusinessDto {
   readonly _id!: string;
 
   @Expose()
-  readonly name!: string;
+  readonly document!: string;
   
   @Expose()
-  readonly ruc!: string;
+  readonly name!: string;
+  
 }

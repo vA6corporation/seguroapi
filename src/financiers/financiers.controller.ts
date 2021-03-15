@@ -15,6 +15,18 @@ export class FinanciersController {
     private financiersService: FinanciersService,
   ) {}
 
+  @Get('byAny/:key')
+  async getFinanciersByAny(
+    @Param('key') key: string,
+    @CurrentUser() user: User,
+  ): Promise<ReadFinancierDto[]> {
+    try {
+      return await this.financiersService.findFinanciersByAny(key, user.businessId);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+    }
+  }
+
   @Get(':pageIndex/:pageSize')
   async getFinanciers(
     @Param('pageIndex') pageIndex: number, 
@@ -51,5 +63,4 @@ export class FinanciersController {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
-
 }

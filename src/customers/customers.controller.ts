@@ -13,7 +13,19 @@ export class CustomersController {
 
   constructor(
     private customersService: CustomersService,
-  ) {}
+  ) { }
+
+  @Get('byAny/:key')
+  async getCustomersByAny(
+    @Param('key') key: string,
+    @CurrentUser() user: User,
+  ): Promise<ReadCustomerDto[]> {
+    try {
+      return await this.customersService.findCustomersByAny(key, user.businessId);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+    }
+  }
 
   @Get(':pageIndex/:pageSize')
   async getCustomers(
@@ -30,12 +42,18 @@ export class CustomersController {
   }
 
   @Get(':customerId')
-  async getCustomerById(@Param('customerId') customerId: string): Promise<ReadCustomerDto|null> {
-    return await this.customersService.findCustomerById(customerId);
+  async getCustomerById(@Param('customerId') customerId: string): Promise<ReadCustomerDto> {
+    try {
+      return await this.customersService.findCustomerById(customerId);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+    }
   }
 
   @Post()
-  async createCustomer(@Body('customer') createCustomerDto: CreateCustomerDto): Promise<ReadCustomerDto> {
+  async create(
+    @Body('customer') createCustomerDto: CreateCustomerDto
+  ): Promise<ReadCustomerDto> {
     try {
       return await this.customersService.create(createCustomerDto);  
     } catch (error) {
@@ -44,7 +62,10 @@ export class CustomersController {
   }
 
   @Put(':customerId')
-  async updateCustomer(@Body('customer') updateCustomerDto: UpdateCustomerDto, @Param('customerId') customerId: string): Promise<ReadCustomerDto> {
+  async update(
+    @Body('customer') updateCustomerDto: UpdateCustomerDto, 
+    @Param('customerId') customerId: string
+  ): Promise<ReadCustomerDto> {
     try {
       return await this.customersService.update(updateCustomerDto, customerId);
     } catch (error) {

@@ -10,17 +10,22 @@ export class UpdateCustomerDto {
   readonly document!: string;
 
   @IsNotEmpty()
-  @MaxLength(250)
+  @MaxLength(240)
   readonly name!: string;
   
   @IsNotEmpty()
-  @MaxLength(250)
+  @MaxLength(240)
   readonly email!: string;
   
-  @IsNotEmpty()
-  @MaxLength(12)
+  readonly mobileNumber!: string;
+
   readonly phoneNumber!: string;
 
-  @IsNotEmpty()
-  readonly businessId!: string;
+  readonly annexed!: string;
+
+  readonly address!: string;
+
+  readonly birthDate!: string;
+
+  readonly representative!: string;
 }

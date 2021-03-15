@@ -7,7 +7,7 @@ export class ReadFinancierDto {
   readonly _id!: Types.ObjectId;
   
   @Expose()
-  readonly ruc!: string;
+  readonly document!: string;
   
   @Expose()
   readonly name!: string;
@@ -16,7 +16,13 @@ export class ReadFinancierDto {
   readonly email!: string;
   
   @Expose()
+  readonly mobileNumber!: string;
+
+  @Expose()
   readonly phoneNumber!: string;
+
+  @Expose()
+  readonly annexed!: string;
 
   @Expose()
   readonly businessId!: string;

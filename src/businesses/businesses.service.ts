@@ -23,8 +23,8 @@ export class BusinessesService {
     return this.businessModel.findOne({ _id: businessId });
   }
 
-  async findBusinessByRuc(ruc: string): Promise<Business|null> {
-    return this.businessModel.findOne({ ruc });
+  async findBusinessByDocument(document: string): Promise<Business|null> {
+    return this.businessModel.findOne({ document });
   }
 
   async findAll(): Promise<Business[]> {

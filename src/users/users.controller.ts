@@ -13,7 +13,7 @@ export class UsersController {
   
   constructor(
     private usersService: UsersService,
-  ) {}
+  ) { }
 
   @Get(':pageIndex/:pageSize')
   async getUsers(
@@ -21,7 +21,7 @@ export class UsersController {
     @Param('pageSize') pageSize: number,
     @CurrentUser() user: User,
   ): Promise<ReadUserDto[]> {
-    return await this.usersService.findByPage(pageIndex, pageSize, user.businessId);
+    return await this.usersService.findUsersByPage(pageIndex, pageSize, user.businessId);
   }
 
   @Get('count')

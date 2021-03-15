@@ -1,19 +1,28 @@
-import { IsNotEmpty, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
 
 export class UpdateFinancierDto {
   @IsNotEmpty()
   @MaxLength(11)
-  readonly ruc!: string;
+  readonly document!: string;
 
   @IsNotEmpty()
-  @MaxLength(250)
+  @MaxLength(240)
   readonly name!: string;
   
   @IsNotEmpty()
-  @MaxLength(250)
+  @MaxLength(240)
   readonly email!: string;
   
-  @IsNotEmpty()
+  @IsOptional()
+  @MaxLength(12)
+  readonly mobileNumber!: string;
+  
+  @IsOptional()
   @MaxLength(12)
   readonly phoneNumber!: string;
+
+  @IsOptional()
+  @MaxLength(12)
+  readonly annexed!: string;
+
 }

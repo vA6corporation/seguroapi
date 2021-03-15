@@ -7,12 +7,11 @@ export type BusinessDocument = Business & Document;
 export class Business {
   _id!: Types.ObjectId;
   
-  @Prop({ required: true })
+  @Prop({ type: String, required: true })
   name!: string;
 
-  @Prop({ required: true })
-  ruc!: string;
-
+  @Prop({ type: String, required: true })
+  document!: string;
 }
 
 export const BusinessSchema = SchemaFactory.createForClass(Business);

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>App</title>
+    <style>
+      body {
+        color: #203764;
+      }
+
+      thead {
+        background-color: #b4c6e7;
+      }
+
+      table, td, th {
+        border: 1px solid black;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Estimados,</h2>
+    <p>Por favor confirmar la renovacion de la siguiente carta fianza:</p>
+    <table>
+      <thead>
+        <th>Afianzado</th>
+        <th>Asegurado</th>
+        <th>Fianza</th>
+        <th>N° Poliza</th>
+        <th>Desde</th>
+        <th>Hasta</th>
+        <th>Monto</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ customer.name }}</td>
+          <td>{{ beneficiary.name }}</td>
+          <td>{{ guaranteeType }}</td>
+          <td>{{ policyNumber }}</td>
+          <td>{{ startDate }}</td>
+          <td>{{ endDate }}</td>
+          <td>S/ {{ price }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <h2>Importante</h2>
+    <ul>
+      <li>Mantener al día los pagos de primas y/o garantías, para la entrega y envío de fianza.</li>
+      <li>En caso de no recibir respuesta se procede con la renovación automática (mismas condiciones de póliza anterior).</li>
+    </ul>
+    <p>
+      Saludos cordiales,
+      <br>
+      HORVI CONSULTORES
+      <br>
+      Cel. 919470714
+      <br>
+      Av. 2 de mayo 1545 Of 304 – San Isidro, Lima
+      <br>
+      Este mensaje es confidencial y solo puede ser utilizado por el destinatario. Si ha recibido este mensaje
+      por error, por favor, sírvase informarlo y borre inmediatamente el mensaje original.
+    </p>
+  </body>
+</html>

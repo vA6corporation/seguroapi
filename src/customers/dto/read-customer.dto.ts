@@ -19,8 +19,23 @@ export class ReadCustomerDto {
   readonly email!: string;
   
   @Expose()
+  readonly mobileNumber!: string;
+
+  @Expose()
   readonly phoneNumber!: string;
 
   @Expose()
-  readonly businessId!: string;
+  readonly annexed!: string;
+
+  @Expose()
+  readonly address!: string;
+
+  @Expose()
+  readonly birthDate!: string;
+
+  @Expose()
+  readonly representative!: string;
+  
+  @Expose()
+  readonly representativeDocument!: string;
 }

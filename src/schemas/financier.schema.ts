@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Business } from 'src/schemas/business.schema';
+import * as mongoose from 'mongoose';
+import { User } from './user.schema';
 
 export type FinancierDocument = Financier & Document;
 
@@ -9,19 +11,28 @@ export class Financier {
   
   _id!: Types.ObjectId;
 
-  @Prop({ required: true })
-  ruc!: string;
+  @Prop({ type: String, required: true })
+  document!: string;
 
-  @Prop({ required: true })
+  @Prop({ type: String, required: true })
   name!: string;
 
-  @Prop({ required: true })
+  @Prop({ type: String, required: true })
   email!: string;
 
-  @Prop({ required: true })
+  @Prop({ type: String, default: null })
+  mobileNumber!: string;
+
+  @Prop({ type: String, default: null })
   phoneNumber!: string;
 
-  @Prop({ type: Types.ObjectId, ref: Business.name, required: true })
+  @Prop({ type: String, default: null })
+  annexed!: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name, required: true })
+  userId!: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Business.name, required: true })
   businessId!: string;
 
 }

@@ -13,12 +13,12 @@ export class FinanciersService {
   constructor(
     @InjectModel(Financier.name) 
     private financierModel: Model<FinancierDocument>
-  ) {}
+  ) { }
 
   async create(createFinancierDto: CreateFinancierDto): Promise<ReadFinancierDto> {
-    const foundFinancier = await this.findFinancierByRuc(createFinancierDto.ruc);
+    const foundFinancier = await this.findFinancierByDocument(createFinancierDto.document);
     if (foundFinancier) {
-      throw new Error("Existe una financiera con el mismo N° de RUC");
+      throw new Error("Existe una financiera con el mismo N° de documento");
     } else {
       const createdFinancier = new this.financierModel(createFinancierDto);
       const savedFinancier = await createdFinancier.save();
@@ -27,10 +27,9 @@ export class FinanciersService {
   }
 
   async update(updateFinancierDto: UpdateFinancierDto, financierId: string): Promise<ReadFinancierDto> {
-    const foundFinancier = await this.findFinancierByRuc(updateFinancierDto.ruc);
+    const foundFinancier = await this.findFinancierByDocument(updateFinancierDto.document);
     if (foundFinancier && !foundFinancier._id.equals(financierId)) {
-      throw new Error("Existe una financiera con el mismo N° de RUC");
-    } else {
+      throw new Error("Existe una financiera con el mismo N° de documento");
     }
     await this.financierModel.updateOne({ _id: financierId }, updateFinancierDto);
     return plainToClass(ReadFinancierDto, updateFinancierDto);
@@ -44,16 +43,16 @@ export class FinanciersService {
   async findFinancierById(financierId: string): Promise<ReadFinancierDto|null> {
     const foundFinancier = await this.financierModel.findOne({ _id: financierId });
     if (foundFinancier) {
-      return plainToClass(ReadFinancierDto, foundFinancier.toObject());
+      return plainToClass(ReadFinancierDto, foundFinancier);
     } else {
       return null;
     }
   }
 
-  async findFinancierByRuc(ruc: string): Promise<ReadFinancierDto|null> {
-    const foundFinancier = await this.financierModel.findOne({ ruc });
+  async findFinancierByDocument(document: string): Promise<ReadFinancierDto|null> {
+    const foundFinancier = await this.financierModel.findOne({ document });
     if (foundFinancier) {
-      return plainToClass(ReadFinancierDto, foundFinancier.toObject());
+      return plainToClass(ReadFinancierDto, foundFinancier);
     } else {
       return null;
     }
@@ -63,6 +62,22 @@ export class FinanciersService {
     const foundFinanciers = await this.financierModel.find({ businessId })
       .skip((pageSize * pageIndex) - pageSize)
       .limit(pageSize);
-    return foundFinanciers.map(financier => plainToClass(ReadFinancierDto, financier.toObject()));
+    return foundFinanciers.map(financier => plainToClass(ReadFinancierDto, financier));
+  }
+
+  async findFinanciersByAny(key: string, businessId: string): Promise<ReadFinancierDto[]> {
+    const regExp = new RegExp(key, 'i');
+    const foundFinanciers = await this.financierModel.find({ 
+      businessId,
+      $or: [
+        { name: regExp },
+        { document: regExp },
+      ] 
+    }).limit(20);
+    if (foundFinanciers.length) {
+      return foundFinanciers.map(financier => plainToClass(ReadFinancierDto, financier));
+    } else {
+      throw new Error("Sin resultados");
+    }
   }
 }

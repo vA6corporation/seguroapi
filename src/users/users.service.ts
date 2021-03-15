@@ -9,10 +9,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
+
   constructor(
     @InjectModel(User.name) 
     private userModel: Model<UserDocument>
-  ) {}
+  ) { }
 
   async create(createUserDto: CreateUserDto): Promise<ReadUserDto> {
     const user = new this.userModel(createUserDto);
@@ -36,20 +37,29 @@ export class UsersService {
 
   async findUserById(userId: string): Promise<ReadUserDto> {
     const foundUser = await this.userModel.findOne({ _id: userId });
-    return plainToClass(ReadUserDto, foundUser);
+    if (foundUser) {
+      return plainToClass(ReadUserDto, foundUser);
+    } else {
+      throw new Error("Sin resultados");
+    }
   }
 
   async findUserByEmail(email: string): Promise<ReadUserDto|null> {
     const foundUser = await this.userModel.findOne({ email });
     if (foundUser) {
-      return plainToClass(ReadUserDto, foundUser.toObject());
+      return plainToClass(ReadUserDto, foundUser);
     } else {
       return null;
     }
   }
 
-  async findByPage(pageIndex: number, pageSize: number, businessId: string): Promise<ReadUserDto[]> {
+  async findUsersByPage(
+    pageIndex: number, 
+    pageSize: number, 
+    businessId: string
+  ): Promise<ReadUserDto[]> {
     const foundUsers = await this.userModel.find({ businessId })
+      .sort('-createdAt')
       .skip((pageSize * pageIndex) - pageSize)
       .limit(pageSize);
     return foundUsers.map(user => plainToClass(ReadUserDto, user.toObject()));
